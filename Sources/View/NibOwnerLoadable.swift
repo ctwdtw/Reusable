@@ -16,6 +16,8 @@ import UIKit
 ///
 /// to be able to instantiate them from the NIB in a type-safe manner
 public protocol NibOwnerLoadable: class {
+  /// The default name of the nib file to use to load a new instance of the View designed in a XIB
+  static var defaultNibName: String { get }
   /// The nib file to use to load a new instance of the View designed in a XIB
   static var nib: UINib { get }
 }
@@ -23,6 +25,10 @@ public protocol NibOwnerLoadable: class {
 // MARK: Default implementation
 
 public extension NibOwnerLoadable {
+  /// By default, use the nib Name is the same as the name of the class.
+  static var defaultNibName: String {
+    return String(describing: Self.self)
+  }
   /// By default, use the nib which have the same name as the name of the class,
   /// and located in the bundle of that class
   static var nib: UINib {
@@ -53,5 +59,12 @@ public extension NibOwnerLoadable where Self: UIView {
         }
       }
     }
+  }
+}
+
+public extension NibOwnerLoadable where Self: UIViewController {
+  func loadRootViewFromNib() {
+    let nibName = String(describing: Self.self)
+    Bundle.main.loadNibNamed(nibName, owner: self, options: nil)
   }
 }
