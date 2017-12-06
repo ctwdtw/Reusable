@@ -67,4 +67,10 @@ public extension NibOwnerLoadable where Self: UIViewController {
     let nibName = String(describing: Self.self)
     Bundle.main.loadNibNamed(nibName, owner: self, options: nil)
   }
+  
+  func viewFromNib() -> UIView {
+    let nibName = String(describing: Self.self)
+    let view = Bundle.main.loadNibNamed(nibName, owner: self, options: nil)?.first as! UIView
+    return view
+  }
 }
